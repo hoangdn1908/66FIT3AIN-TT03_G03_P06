@@ -47,7 +47,7 @@ The module `starter/loader.py` loads and verifies stochastic consistency (all tr
 
 ### Installation, Reproducibility, and Execution
 
-- **GitHub Repository:** https://github.com/hoangdn1908/project-06-hmm-traffic
+- **GitHub Repository:** https://github.com/hoangdn1908/66FIT3AIN-TT03_G03_P06
 - **Python Version:** 3.11
 
 **Linux / macOS:**
