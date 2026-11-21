@@ -30,25 +30,44 @@ project-06-hmm-traffic/
 │   ├── sequence_len200_noise30_seed42.csv # 200-step trajectory with 30% sensor noise
 │   └── SHA256SUMS                         # Cryptographic checksums ensuring data integrity
 ├── scripts/
-│   └── generate_sequence.py               # Configurable sequence generator with noise injection
+│   ├── generate_sequence.py               # Configurable sequence generator with noise injection
+│   └── run_experiment.py                  # Reproducible benchmark script (Table 3, Table 4, probes)
 ├── starter/
 │   ├── loader.py                          # Parser for HMM configurations and sequence datasets
-│   ├── traffic_core.py                    # Algorithmic stubs for Forward and Viterbi inference
-│   └── app.py                            # Streamlit interactive playback dashboard
+│   ├── traffic_core.py                    # First-principles Forward, Viterbi, and accuracy core
+│   └── app.py                             # Streamlit interactive playback dashboard
 ├── tests/
-│   └── test_project_06_sanity.py          # Unit tests verifying stochastic matrix validity and APIs
+│   ├── test_project_06_sanity.py          # Starter sanity tests for data integrity
+│   └── test_traffic_core.py               # Unit tests & Streamlit AppTest suite (9/9 passing)
 └── requirements.txt                       # Pinned Python package dependencies (including streamlit)
 ```
 
 ### Starter Infrastructure vs. Student Implementation
-The module `starter/loader.py` loads and verifies stochastic consistency (all transition and emission rows sum to 1.0). The module `starter/app.py` renders the visual playback timeline. Students implement the probabilistic core in `starter/traffic_core.py`, specifically: the Forward algorithm (`forward`), the Viterbi dynamic programming algorithm (`viterbi`), and sequence evaluation metrics (`accuracy_against_ground_truth`). Third-party HMM libraries (e.g., `hmmlearn`) and Large Language Model (LLM) APIs are strictly prohibited.
+The module `starter/loader.py` loads and verifies stochastic consistency (all transition and emission rows sum to 1.0). The module `starter/app.py` renders the interactive visual playback dashboard. The probabilistic core in `starter/traffic_core.py` implements the Forward algorithm (`forward`), log-space Viterbi dynamic programming (`viterbi`), and sequence evaluation (`accuracy_against_ground_truth`) from first principles, alongside the reproducible evaluation runner (`scripts/run_experiment.py`) and test suite (`tests/test_traffic_core.py`). Third-party HMM libraries (e.g., `hmmlearn`) and Large Language Model (LLM) APIs are strictly prohibited.
 
-### Installation and Execution
+### Installation, Reproducibility, and Execution
+
+- **GitHub Repository:** https://github.com/hoangdn1908/project-06-hmm-traffic
+- **Python Version:** 3.11
+
+**Linux / macOS:**
 ```bash
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-streamlit run starter/app.py
+python scripts/run_experiment.py --seed 42 --runs 30   # reproduces Tables 3 & 4, confusion matrix, probes
+pytest tests/test_traffic_core.py -v                  # runs 9 unit & Streamlit AppTest checks
+streamlit run starter/app.py                          # starts the interactive dashboard
+```
+
+**Windows (PowerShell):**
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+python scripts/run_experiment.py --seed 42 --runs 30   # reproduces Tables 3 & 4, confusion matrix, probes
+pytest tests/test_traffic_core.py -v                  # runs 9 unit & Streamlit AppTest checks
+streamlit run starter/app.py                          # starts the interactive dashboard
 ```
 
 ---
